@@ -1,0 +1,153 @@
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Alice&family=Cormorant:wght@300&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+        <style>
+
+            *{
+                font-family: Alice;
+            }
+
+.break{
+    margin: 10px 0;
+}
+
+.container{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8%;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    height: 600px;
+    width: 400px;
+    box-shadow: 0 0 3px #79bee0;
+  
+}
+
+.name{
+    margin-top: 40px;
+    font-size: 22px;
+}
+
+
+.mail{
+    font-size: 22px;
+}
+
+.password{
+    font-size: 22px;
+}
+
+.cpassword{
+    font-size: 22px;
+}
+
+.category{
+    font-size: 22px;
+}
+
+.button{
+    width: 300px;
+    height: 45px;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    margin-top: 20px;
+   
+}
+
+#name{
+    border: none;
+    border-bottom:1px solid #9dcde5;
+    width: 300px;
+    height: 40px;
+    outline: none;
+    margin-bottom: 10px;
+}
+
+#email{
+    border: none;
+    border-bottom:1px solid #9dcde5;
+    width: 300px;
+    height: 40px;
+    outline: none;
+    margin-bottom: 10px;
+}
+
+#category{
+    border: none;
+    border-bottom:1px solid #9dcde5;
+    width: 300px;
+    height: 40px;
+    outline: none; 
+    margin-bottom: 10px;
+}
+
+#password{
+    border: none;
+    border-bottom:1px solid #9dcde5;
+    width: 300px;
+    height: 40px;
+    outline: none;
+    margin-bottom: 10px;
+}
+
+#cpassword{
+    border: none;
+    border-bottom:1px solid #9dcde5;
+    width: 300px;
+    height: 40px;
+    outline: none;
+  
+}
+
+
+        </style>
+
+    </head>
+    <body>
+        <%= Message %>
+        <div class="container">
+        <form action="/add_topicManager" method="post">
+            <div class="break"></div>
+            <div class="name">Name</div>
+            <div class="break"></div>
+            <input type="text" name ='name' id="name">
+            <div class="break"></div>
+
+            <div class="mail">Email</div>
+            <div class="break"></div>
+            <input type="email" name = 'email' id="email">
+            <div class="break"></div>
+
+            <div class="category">select category</div>
+            <div class="break"></div>
+            <select name="category" id="category">
+            <div class="break"></div>
+            <option value=""  >select</option>
+            <% Data.forEach(data => { %>
+            <option value="<%= data._id %>"  ><%= data.category %></option>
+            <% }); %>
+            </select>
+            <div class="break"></div>
+
+            <div class="password">password</div>
+            <div class="break"></div>
+            <input type="password" name = 'password' id="password">
+            <div class="break"></div>
+
+            <div class="cpassword">Confirm password</div>
+            <div class="break"></div>
+            <input type="password" name = 'cpassword' id="cpassword">
+            <div class="break"></div>
+
+            <button type="submit" class="button">Add</button>
+            <div class="break"></div>
+        </div>
+            <!-- <button >New to Blog</button> -->
+        </form>
+    </body>
+</html>

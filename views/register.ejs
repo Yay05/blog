@@ -1,16 +1,38 @@
 <html>
-    <head></head>
+    <head>
+        <link rel="stylesheet" href="register.css"> 
+    </head>
     <body>
+        <%= message %>
+        <div class="container">
         <form action="/register" method="post">
-            <div>enter name</div>
+            <div class="break"></div>
+
+            <div class="name"> Name</div>
+            <div class="break"></div>
             <input type="text" name ='name' id="name">
-            <div>Enter Email</div>
+            <div class="break"></div>
+
+            <div class="mail">Email</div>
+            <div class="break"></div>
             <input type="email" name = 'email' id="email">
-            <div>password</div>
+            <div class="break"></div>
+
+            <div class="password">password</div>
+            <div class="break"></div>
             <input type="password" name = 'password' id="password">
-            <div>Confirm password</div>
+            <div class="break"></div>
+
+            <div class="cpassword">Confirm password</div>
+            <div class="break"></div>
             <input type="password" name = 'cpassword' id="cpassword">
-            <button type="submit">register</button>
+            <div class="break"></div>
+
+            <button type="submit" class="button">Sign Up</button>
+            <div class="break"></div>
+            <p class="login">New to Blog?<a href="/"> Sign In</a></p>
+            </div>
+            
             <!-- <button >New to Blog</button> -->
         </form>
     </body>

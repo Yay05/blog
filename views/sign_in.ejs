@@ -1,13 +1,31 @@
 <html>
-    <head></head>
+    <head>
+        <link rel="stylesheet" href="../login.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Alice&family=Cormorant:wght@300&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    </head>
     <body>
-        <form action="/" method="post">
-            <div>Enter Email</div>
-            <input type="email" name = 'email' id="email">
-            <div>password</div>
-            <input type="password" name = 'password' id="password">
-            <button type="submit">register</button>
-            <button ><a href="/register">New to Blog? Join Now</a></button>
-        </form>
+        <div class="container"> 
+            <form action="/" method="post">
+                <div class="sign-in">Sign In</div>
+                <div class="break"></div>
+                <%= message %>
+              
+                <div class="email">Email</div>
+                <div class="break"></div>
+                <input type="email" name = 'email' id="email">
+                <div class="break"></div>
+                <div class="password">password</div>
+                <div class="break"></div>
+                <input type="password" name = 'password' id="password">
+                <div class="break"></div>
+                <div class="break"></div>
+                <button type="submit" class="button">Sign In</button>
+                <div class="break"></div>
+                <p class="join-now">New to Blog?<a href="/register"> Join Now</a></p>
+            </form>
+        </div>
+       
     </body>
 </html>

@@ -1,0 +1,130 @@
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alice&family=Cormorant:wght@300&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+
+        *{
+            font-family: Alice;
+        }
+        .manage-user {
+            display: none;
+        }
+
+        .pop-manage-user {
+            display: block;
+        }
+    </style>
+
+</head>
+
+<body>
+        <%= Message %>
+        <% if (id) { %>
+            <div id="div">
+                <h1>
+                    <%= id %>
+                </h1>
+            </div>
+         <% } %>
+                <a href="/logout"><button>logout</button></a>
+
+                <button onclick="openManageUsers();">manage users</button>
+
+                <div class="manage-user" id="manage-user">
+                    <table>
+                        <tr>
+                            <th>SI NO</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                            <th></th>
+                        </tr>
+                        <% var i=1 %>
+                            <% data.reverse().forEach(person=> { %>
+                                <% if (person.privilege !=='admin' && person.privilege !=='topicManager' ) { %>
+                                   
+                                                        <tr>
+                                                            <td>
+                                                                <%= i++ %>
+                                                            </td>
+                                                            <td>
+                                                                <%= person.email %>
+                                                            </td>
+                                                            <% if (person.status===1 ) { %>
+                                                                <td>
+                                                                    <a href="/reject_user/<%= person._id %>">
+                                                                        reject
+                                                                    </a>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="/profile/<%= person._id %>">
+                                                                        <button>view profile</button>
+                                                                    </a>
+                                                                </td>
+                                                                <% } else { %>
+                                                                    <td>
+                                                                        <a href="/accept_user/<%= person._id %>">
+                                                                            accept
+                                                                        </a>
+                                                                    </td>
+                                                                   
+                                                                    <td>
+                                                                        <a href="/profile/<%= person._id %>">
+                                                                            <button>view profile</button>
+                                                                        </a>
+                                                                    </td>
+                                    <% } %>
+                                                    </tr>
+                                 <% } %>
+                             <% }) %>
+                    </table>
+                </div>
+
+                <div class="accept_topic">
+                    
+                <% var i=1 %>
+                <% data.reverse().forEach(person=> { %>
+                <% articles.reverse().forEach(article=> { %>
+                    
+                    <% if ( person._id == article.id && article.category === id) { %>
+                       
+                        
+
+                    <% if (person.status === 1 && article.isAccepted === 0 && person.privilege !=='admin' && article.isRejected === 0) { %>
+                    <div style="margin: 10px;"></div>
+                    <div style="margin: 10px;">
+                        <h1>
+                            <%= article.topic %>
+                        </h1>
+                    </div>
+                    <div class="article-article" style="margin: 10px;">
+                        <p>
+                            <%= article.article %>
+
+                        </p>
+                        <a href="/accept_Article/<%= article.count %>">accept</a>
+                        <a href="/reject_Article/<%= article.count %>">reject</a>
+                    </div>
+                    
+
+                            <div style="margin: 10px;">
+                                By <%= person.name %>
+                            </div>
+                            <% } %>
+                            <% } %>
+                         <% }); %>
+                <% }); %>
+
+                </div>
+
+                <script>
+                    manageUsers = document.getElementById('manage-user');
+                    openManageUsers = () => {
+                        manageUsers.classList.add("pop-manage-user");
+                    }
+                </script>
+</body>
+
+</html>

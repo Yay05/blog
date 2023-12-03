@@ -1,0 +1,86 @@
+
+*{
+    font-family: Alice;
+}
+
+.break{
+    margin: 10px 0;
+}
+
+.container{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    height: 530px;
+    width: 400px;
+    box-shadow: 0 0 3px #79bee0;
+  
+}
+
+.name{
+    margin-top: 40px;
+    font-size: 22px;
+}
+
+.mail{
+    font-size: 22px;
+}
+
+.password{
+    font-size: 22px;
+}
+
+.cpassword{
+    font-size: 22px;
+}
+
+.button{
+    width: 300px;
+    height: 45px;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    margin-top: 20px;
+   
+}
+
+#name{
+    border: none;
+    border-bottom:1px solid #9dcde5;
+    width: 300px;
+    height: 40px;
+    outline: none;
+}
+
+#email{
+    border: none;
+    border-bottom:1px solid #9dcde5;
+    width: 300px;
+    height: 40px;
+    outline: none;
+}
+
+#password{
+    border: none;
+    border-bottom:1px solid #9dcde5;
+    width: 300px;
+    height: 40px;
+    outline: none;
+}
+
+#cpassword{
+    border: none;
+    border-bottom:1px solid #9dcde5;
+    width: 300px;
+    height: 40px;
+    outline: none;
+}
+
+.login{
+    text-align: center;
+    font-size: 20px;
+}

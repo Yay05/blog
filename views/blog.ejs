@@ -1,1 +1,165 @@
-hello
+<html>
+
+<head>
+    <title>Blog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+   
+    <link rel="stylesheet" href="userDashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alice&family=Cormorant:wght@300&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="">Profile</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav mx-auto">
+                    <a class="nav-link" onclick="openArticles();closeManageArticles();closeAddArticles();">Articles</a>
+                    <a class="nav-link" onclick="openManageArticles();closeArticles();closeAddArticles();">Manage
+                        Articles</a>
+                    <a class="nav-link" onclick="openAddArticles();closeArticles();closeManageArticles();">Add Articles</a>
+                </div>
+                <div class="navbar-nav ml-auto">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- <%= id %> -->
+    <%= message %>
+<div class="add-articles-container">
+        <div id="add-articles" class="add-articles">
+            <form action="/add_articles/<%= id %>" method="post">
+                <div class="add-articles-category">select category</div>
+                <select name="category" id="category">
+                    <option value="">select</option>
+                    <% Data.forEach(data=> { %>
+                        <option value="<%= data._id %>">
+                            <%= data.category %>
+                        </option>
+                        <% }); %>   
+                </select>
+
+                <div>Heading</div>
+                <input type="text" name="topic"  class="add-articles-heading">
+                <div>content</div>
+                <textarea class="add-articles-textarea" name="article" oninput="autoAdjustHeight(this)"></textarea>
+                <button type="submit" class="add-articles-button">Add</button>
+            </form>
+        </div>
+    </div>
+
+        <div class="article-container">
+        <div class="articles w-75" id="articles">
+            <% var i=1 %>
+                <% newarticle.reverse().forEach(data=> { %>
+                    <%  if(data.isAccepted === 1 ) { %>
+                    <div style="margin: 10px;"></div>
+                   
+                    <div style="margin: 10px;">
+                        <h1><%= data.topic %></div></h1>
+                   
+                    <div  class="article-article" style="margin: 10px;">
+                        <p style="display: inline;"><%= data.article.substr(0,100) + "..."%></p><a style="display: inline;" href="/view_more/<%= data._id %>">view more</a>
+                    </div>
+                    <div style="margin: 10px;">
+                        By <%= data.name %>
+                    </div>
+                    <% } %>
+                    <% }); %>
+        </div>
+    </div>
+
+        <div class="manage-articles " id="manage-articles">
+            <% var i=1 %>
+                <% newarticle.reverse().forEach(data=> { %>
+                    <% if(data.id === id && data.isAccepted === 1){ %>
+                      
+                        <div>
+                            <h1><%= data.topic %></div></h1>
+                    
+                        <div  class="manage-article-article" >
+                            <p><%= data.article%></p>
+                         </div>
+                        <div class="manage-articles-img1"><a href="/edit_articles/<%= data._id %>"><img class="edit-img" src="edit.png" /></a></div>
+                        <div class="manage-articles-img"><a href="/delete_articles/<%= data._id %>"><img class="delete-img" src="trash.png" /></a>
+                        </div>
+                   
+                   
+                        <% } %>
+                 <% }); %>
+
+                 <% var i=1 %>
+                 <% newarticle.reverse().forEach(data=> { %>
+                     <% if(data.id===id && data.isAccepted === 0 && data.isRejected === 1){ %>
+                       
+                         <div>
+                             <h1><%= data.topic %></div></h1>
+                     
+                         <div  class="manage-article-article" >
+                             <p> <%= data.article %>'  </p>
+                            
+                             <h5> rejected by topicManager</h5>
+                          </div>
+                      <% } %>
+                  <% }); %>
+        </div>
+   
+        <script>
+            articles = document.getElementById('articles');
+            openArticles = () => {
+                articles.classList.add("pop-articles");
+                articles.classList.remove("close-articles");
+            }
+
+            closeArticles = () => {
+                articles.classList.remove("pop-articles");
+                articles.classList.add("close-articles");
+
+            }
+
+            manageArticles = document.getElementById('manage-articles');
+            openManageArticles = () => {
+                manageArticles.classList.add("pop-manage-articles");
+            }
+
+            closeManageArticles = () => {
+                manageArticles.classList.remove("pop-manage-articles");
+            }
+
+            addArticles = document.getElementById('add-articles');
+            openAddArticles = () => {
+                addArticles.classList.add("pop-add-articles");
+            }
+
+            closeAddArticles = () => {
+                addArticles.classList.remove("pop-add-articles");
+            }
+
+            function autoAdjustHeight(textarea) {
+ 
+                    textarea.style.height = 'auto';
+                    textarea.style.height = (textarea.scrollHeight) + 'px';
+            }
+        </script>
+</body>
+
+</html>

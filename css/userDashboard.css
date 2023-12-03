@@ -1,0 +1,148 @@
+*{
+    font-family: Alice ;
+}
+
+.articles {
+    padding: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    height: auto;
+    box-shadow: 0 0 1px #79bee0;
+}
+
+.pop-articles {
+    display: block;
+
+}
+
+.close-articles{
+    display: none;
+}
+
+.manage-articles {
+    display: none;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    height: auto;
+    box-shadow: 0 0 1px #79bee0;
+    width: 90%;
+    /* block to none */
+}
+
+.pop-manage-articles {
+    display: block;
+    /* visibility: visible; */
+
+}
+
+.add-articles{
+    display: none;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    height: auto;
+    box-shadow: 0 0 1px #79bee0;
+    width: 90%;
+    color: black;
+    /* visibility: hidden; */
+}
+
+.pop-add-articles{
+    display: block;
+    /* visibility: visible; */
+
+}
+.nav-link {
+    cursor: pointer !important;
+}
+
+
+
+.article-article > p{
+    text-align: justify;
+}
+
+.navbar{
+    box-shadow: 0 0 3px #79bee0 !important;
+    color: black !important;
+}
+
+.navbar a{
+    color: black !important;
+    font-size: 22px;
+}
+
+
+
+.manage-articles-img1{
+    display: inline;
+   }
+
+.manage-articles-img{
+ display: inline;
+ margin-left: 20px;
+}
+
+.edit-img{
+    height: 20px;
+    width: 20px;
+    display: inline ;
+}
+
+.delete-img{
+    
+    height: 20px;
+    width: 20px;
+}
+
+
+
+#category{
+    margin: 10px 0;
+}
+.add-articles-heading{
+    margin: 10px 0;
+    font-size: 22px;
+    border: none;
+    border-bottom:1px solid #9dcde5;
+    width: 300px;
+    height: 20px;
+    outline: none;
+    margin: 10px 0;
+}
+
+.add-articles-textarea{
+    
+    width: 100%;
+    border: none;
+    outline: none;
+    border-bottom:1px solid #9dcde5;
+    overflow-y: hidden;
+}
+
+.add-articles-button{
+    width: 100px;
+    height: 45px;
+    border-radius: 10px;
+    color: black;
+    border: none;
+    margin-top: 20px;
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+    margin-left: 94%;
+}
+
+#category{
+    border: none;
+    border-bottom:1px solid #9dcde5;
+    width: 300px;
+    height: 40px;
+    outline: none; 
+    margin-bottom: 10px;
+}

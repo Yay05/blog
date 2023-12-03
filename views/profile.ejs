@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Alice&family=Cormorant:wght@300&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+        <style>
+
+            *{
+                font-family: Alice;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                
+            }
+    
+            .container1 {
+                flex: 0 0 20%; /* Flex basis set to 30% */
+                background-color: #f2f2f2;
+                padding: 20px;
+                height: auto;
+            }
+    
+            .container2 {
+                flex: 0 0 80%; /* Flex basis set to 70% */
+                background-color: #e0e0e0;
+                padding: 20px;
+                height: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container1">
+       <h1><%= Response.name %></h1>
+        <p><%= Response.email %></p>
+        <p>Account status : <%= Response.privilege %></p>
+        <p> Raating : <%= Response.rating %></p>
+        
+       
+        </div>
+        <div class="container2">
+            <h1>Articles</h1>
+        <% Data.reverse().forEach(data => { %>       
+           <% if(data.id == Response._id){%>    
+            
+            <h1> <%= data.topic %></h1>
+            <p>Article: <%= data.article %></p>
+            <% }%>
+        <% }) %>
+    </div>
+    </body>
+</html>

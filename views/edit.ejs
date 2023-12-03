@@ -1,0 +1,193 @@
+<html>
+
+<head>
+    <!-- <link rel="stylesheet" href="article_edit.css"> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alice&family=Cormorant:wght@300&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+
+        *{
+            font-family: Alice;
+        }
+        .articles {
+            padding: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 40px;
+            height: auto;
+            box-shadow: 0 0 1px #79bee0;
+
+
+            /* none to block */
+        }
+
+        .pop-articles {
+            display: block;
+
+        }
+
+        .close-articles {
+            display: none;
+        }
+
+        .manage-articles {
+            display: none;
+            padding: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 40px;
+            height: auto;
+            box-shadow: 0 0 1px #79bee0;
+            width: 90%;
+            /* block to none */
+        }
+
+        .pop-manage-articles {
+            display: block;
+            /* visibility: visible; */
+
+        }
+
+        .add-articles {
+            display: none;
+            padding: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 40px;
+            height: auto;
+            box-shadow: 0 0 1px #79bee0;
+            width: 90%;
+            color: black;
+            /* visibility: hidden; */
+        }
+
+        .pop-add-articles {
+            display: block;
+            /* visibility: visible; */
+
+        }
+
+        .nav-link {
+            cursor: pointer !important;
+        }
+
+
+
+        .article-article>p {
+            text-align: justify;
+        }
+
+        .navbar {
+            box-shadow: 0 0 3px #79bee0 !important;
+            color: black !important;
+        }
+
+        .navbar a {
+            color: black !important;
+            font-size: 22px;
+        }
+
+
+
+        .manage-articles-img1 {
+            display: inline;
+        }
+
+        .manage-articles-img {
+            display: inline;
+            margin-left: 20px;
+        }
+
+        .edit-img {
+            height: 30px;
+            width: 30px;
+            display: inline;
+        }
+
+        .delete-img {
+
+            height: 30px;
+            width: 30px;
+        }
+
+        .edit-container {
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 40px;
+        }
+
+        #category {
+            margin: 10px 0;
+        }
+
+        .edit-heading {
+            margin: 10px 0;
+            border: none;
+            border-bottom: 1px solid #9dcde5;
+            width: 300px;
+            height: 20px;
+            outline: none;
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        .add-articles-textarea {
+
+            width: 100%;
+            border: none;
+            outline: none;
+            border-bottom: 1px solid #9dcde5;
+            overflow-y: hidden;
+        }
+
+        .add-articles-button {
+            width: 100px;
+            height: 45px;
+            border-radius: 10px;
+            color: black;
+            border: none;
+            margin-top: 20px;
+            font-size: 18px;
+            margin-bottom: 10px;
+            text-align: center;
+            margin-left: 94%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="edit-container">
+        <form action="/edit_articles/<%= id %>" method="post">
+            <div class="edit-category">select category</div>
+            <select name="category" id="category">
+                <option value="">select</option>
+                <% Data.forEach(data=> { %>
+                    <option value="<%= data._id %>">
+                        <%= data.category %>
+                    </option>
+                    <% }); %>
+
+            </select>
+
+            <div>Heading</div>
+            <input type="text" name="topic" value="<%= topic %>" class="edit-heading">
+            <div>content</div>
+            <textarea style="width: 100%;" name="article" class="add-articles-textarea"
+                oninput="autoAdjustHeight(this)"><%= user_article %></textarea>
+            <button type="submit" class="add-articles-button">update</button>
+        </form>
+    </div>
+    <script>
+        function autoAdjustHeight(textarea) {
+
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,179 @@
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alice&family=Cormorant:wght@300&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+
+*{
+  font-family: Alice;
+}
+
+.container{
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    
+}
+
+.cancel{
+  margin-left: 20px;
+}
+
+.comment{
+    margin-left: 20px;
+}
+
+
+.view-more-img{
+  height: 20px;
+  width: 20px;
+}
+
+.view-more-img1{
+  height: 20px;
+  width: 20px;
+}
+
+.view-more-buttons{
+  display: flex;
+  justify-content: end;
+  margin-top: 20px;
+}
+
+   .add-articles-textarea{width: 100%;
+    border: none;
+    outline: none;
+    border-bottom:1px solid #9dcde5;
+    overflow-y: hidden;}
+    </style>
+</head>
+<body>
+ 
+    <div class="container">
+    
+      <% articles.forEach(article => { %>
+        <% if (id == article._id) { %>
+          <h1> <%= article.topic %></h1>
+         <p> <%= article.article %></p>
+      
+          <% if (User === 'premium') { %>
+          
+          <form action="/view_more/<%= id %>" method="post">
+            <div>comment</div>
+            <textarea class="add-articles-textarea" id="textarea" name="Comments" oninput="autoAdjustHeight(this)"></textarea>
+            <div class="view-more-buttons">
+              
+              
+             
+              <%
+              let userLiked = false;
+              
+              for (let index in likes) {
+                const like = likes[index];
+
+                if(like.count === Count){
+              
+                if (like.name === Name && like.like === 1 && like.id == id && Count === like.count) {
+                  userLiked = true;
+                  break; 
+                } else {
+                  userLiked = false;
+                }
+              }
+              }
+              %>
+              
+              <% if (!userLiked) { %>
+              
+                <a href="/add_like/<%= article._id %>"><img class="view-more-img1" src="/like.png" /></a><span style="margin-left: 10px;"><%= article.totalLikes %></span>
+              <% } else { %> 
+        
+                <a href="/remove_like/<%= article._id %>"><img class="view-more-img" src="/like(1).png " /></a><span  style="margin-left: 10px;"><%= article.totalLikes %></span>
+              <% } %>
+          
+              <button class="cancel" type="reset" onclick="reset()">cancel</button>
+              <button type="submit" class="comment">comment</button>
+            </div>
+          </form>
+          <% } %>
+        <% } %>
+      <% }); %>
+      
+      <% if (User === 'premium' || User === 'admin' || User === 'topicManager') { %>
+            <% articles.forEach(article=> { %>
+
+            <% comments.reverse().forEach(com=> { %>
+
+                <% if( id === com.id && id == article._id ){ %>
+                    <p style="display: inline;margin-right: 20px;">@<%= com.name %> </p>
+                        <%
+                          const elapsedMilliSeconds = (CurrentTime - com.date)
+                        
+                          const seconds = (CurrentTime - com.date) / 1000;
+                          const elapsedTimeSeconds = Math.round(seconds);
+                        
+                          const Minutes = elapsedTimeSeconds / 60;
+                          const elapsedTimeMinutes = Math.round(Minutes);
+                        
+                          const Hours = elapsedTimeMinutes / 60;
+                          const elapsedTimeHours = Math.round(Hours);
+                        
+                          const days = elapsedTimeHours / 24;
+                          const elapsedTimedays = Math.round(days);
+                        
+                          const Month = elapsedTimedays / 31;
+                          const elapsedTimeMonth = Math.round(Month);
+                        
+                          const Years = elapsedTimeMonth / 12;
+                          const elapsedTimeYears = Math.round(Years);
+                        %>
+                        
+                        <% if (elapsedMilliSeconds > 0 && elapsedMilliSeconds <= 1000) { %>
+                            <p style="display: inline;">just now</p>
+                        
+                        <% } else if (elapsedTimeSeconds > 0 && elapsedTimeSeconds <= 60) { %>
+                          <p style="display: inline;"><%= elapsedTimeSeconds %> seconds ago</p>
+                        
+                        
+                        <% } else if (elapsedTimeMinutes > 0 && elapsedTimeMinutes <= 60) { %>
+                          <p style="display: inline;"><%= elapsedTimeMinutes %> minutes ago</p>
+                        
+                        <% } else if (elapsedTimeHours > 0 && elapsedTimeHours <= 24) { %>
+                          <p style="display: inline;"><%= elapsedTimeHours %> hours ago</p>
+                        
+                        <% } else if (elapsedTimedays > 0 && elapsedTimedays <= 31) { %>
+                          <p style="display: inline;"><%= elapsedTimedays %> days ago</p>
+                        
+                        <% } else if (elapsedTimeMonth > 0 && elapsedTimeMonth <= 12) { %>
+                          <p style="display: inline;"><%= elapsedTimeMonth %> months ago</p>
+                        
+                        <% } else { %>
+                          <p style="display: inline;"><%= elapsedTimeYears %> years ago</p>
+                        <% } %>
+                        
+                    <p><%= com.comment %></p>
+                 
+           <% } %>
+         <% }); %>
+        <% }); %>
+        <% } %>
+    </div>
+
+    <script>
+        function autoAdjustHeight(textarea) {
+           
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+        }
+            function reset() {
+            var textarea = document.getElementById('textarea');
+            textarea.value = '';
+        }
+
+       
+
+       
+    </script>
+</body>
+
+</html>
