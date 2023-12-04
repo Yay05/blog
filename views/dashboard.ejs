@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <title>Blog</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -13,42 +14,37 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Alice&family=Cormorant:wght@300&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="adminDashboard.css">
+   
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alice&family=Cormorant:wght@300&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/admin">Blog</a>
+            
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav mx-auto">
-
-                    <a class="nav-link" href="/manageTopicManagers">Manage-Topic-Managers</a>
-                    <a class="nav-link" href="/manageUsers">Manage-Users</a>
-                    <a class="nav-link" href="/addTopics">Add-category</a>
-                    <a class="nav-link" href="/add_topicManager">Add-Topic-Manager </a>
+                    <a class="nav-link" href="">Blog</a>
+                    <a class="nav-link" href="/sign_in">sign in</a>
                 </div>
                 <div class="navbar-nav ml-auto">
-                    <a class="nav-link" href="/logout">Logout</a>
+                   
                 </div>
             </div>
         </div>
     </nav>
 
-
    
-                <%= message  %>
- 
+        <%= message %>
 
-
-
+        
             <div class="article-container">
                 <div class="articles" id="articles">
                     <% var i=1 %>
@@ -60,16 +56,15 @@
                            
                             <div class="image-container">
                                
-                              
-            
+                                
                             <div style="margin: 10px;">
                                 <img src="<%= articles.Image %>" height="250px" width="250px">
                             </div>
                             <%
-                            const requestedTime = new Date(articles.acceptedTime);
-                        %>
-        
-                        <h4><%= requestedTime.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></h4>
+                                const requestedTime = new Date(articles.acceptedTime);
+                            %>
+            
+                            <h4><%= requestedTime.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></h4>
                             <h1>
                                 <%= articles.topic %>
                             </h1>
@@ -94,9 +89,9 @@
             </div>
 
 
-           
-      
-             
+     
+   
+        
 </body>
 
 </html>

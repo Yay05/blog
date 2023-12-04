@@ -1,6 +1,7 @@
 
 var express = require('express');
 const app = express.Router();
+var bcrypt = require('bcrypt');
 // const dashboard = require('./dashboard');
 
 var Database = require('../models/database');
@@ -10,11 +11,11 @@ var Category = require('../models/category');
 
 
 
-app.get('/', function (req, res) {
+app.get('/sign_in', async function (req, res) {
     res.render('sign_in', { message: '' });
  });
  
- app.post('/', function (req, res) {
+ app.post('/sign_in', function (req, res) {
     var flag = 0;
     
     Database.find(function (err, data) {
@@ -52,30 +53,50 @@ app.get('/', function (req, res) {
        res.render('sign_in', { message: "Please enter both id and password" });
     }
     else {
-       Database.findOne({ email: req.body.email }, (err, response) => {
+       Database.findOne({ email: req.body.email },  async (err, response) => {
  
           if(!response){
              res.render('sign_in', { message: "user does not exixt" });
           }
+
+          else if(response.rejectedBy === 'topicManager'){
+            res.render('sign_in', { message: " blocked by Topic Manager" });
+          }
+
+          else if(response.rejectedBy ==='admin'){
+            res.render('sign_in', { message: " blocked by Admin " });
+          }
+
  
-         else if (response.email === req.body.email && response.password === req.body.password && response.privilege === 'basic' || response.privilege === 'premium' && response.status === 1) {
-             req.session.user = response;
+         else if (response.email) {
+            const isValid = await bcrypt.compare(req.body.password,response.password);
+           if(response.email === req.body.email && response.privilege === 'basic' || response.privilege === 'premium' && response.status === 1 && isValid){
+            req.session.user = response;
              flag = 1;
              res.redirect('/dashboard');
+            }
+
+            else if (response.email === req.body.email && response.privilege === 'admin' && response.password === req.body.password) {
+               req.session.user = response;
+               flag = 1;
+               res.redirect('/admin');
+            }
+
+            else if (response.email === req.body.email && response.privilege === 'topicManager' && isValid) {
+               req.session.user = response;
+               flag = 1;
+               res.redirect('/topicManager');
+            }
+
+            else{
+               res.render('sign_in', { message: "  invalid email or password " });
+            }
           }
-          else if (response.email === req.body.email && response.password === req.body.password && response.privilege === 'admin') {
-             req.session.user = response;
-             flag = 1;
-             res.redirect('/admin');
-          }
+         
  
-          else if (response.email === req.body.email && response.password === req.body.password && response.privilege === 'topicManager') {
-             req.session.user = response;
-             flag = 1;
-             res.redirect('/topicManager');
-          }
+          
           else {
-             res.render('sign_in', { message: "invalid details" });
+             res.render('sign_in', { message: "invalid credentials" });
              console.log('error')
              return;
           }

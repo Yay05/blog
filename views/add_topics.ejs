@@ -42,61 +42,21 @@
         </div>
     </nav>
 
-
-   
-                <%= message  %>
- 
-
-
-
-            <div class="article-container">
-                <div class="articles" id="articles">
-                    <% var i=1 %>
-                        <% article.reverse().forEach(articles=> { %>
-                            <% data.reverse().forEach(person=> { %>
-                                <% if (person._id==articles.id) { %>
-                            <% if (person.status === 1 && articles.isAccepted === 1) { %>
-                            <div style="margin: 10px;"></div>
-                           
-                            <div class="image-container">
-                               
-                              
-            
-                            <div style="margin: 10px;">
-                                <img src="<%= articles.Image %>" height="250px" width="250px">
-                            </div>
-                            <%
-                            const requestedTime = new Date(articles.acceptedTime);
-                        %>
-        
-                        <h4><%= requestedTime.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></h4>
-                            <h1>
-                                <%= articles.topic %>
-                            </h1>
-                            <div class="article-article" style="margin: 10px;">
-                                <p style="display: inline;">
-                                    <%= articles.article.substr(0,500) + "..." %>
-                                  
-                                </p><a style="display: inline;" href="/view_more/<%= articles._id %>">view more</a>
-                            </div>
-                          
-                            
-                                
-                                    <div style="margin-bottom: 200px;">
-                                        By <%= person.name %>
-                                    </div>
-                                </div>
-                                    <% } %>
-                                    <% } %>
-                                 <% }); %>
-                        <% }); %>
-                </div>
+    <% if (message) { %>
+        <div id="div">
+            <h1>
+                <%= message %>
+            </h1>
+        </div>
+        <% } %>
+            <div id="add-category" class="add-category">
+                <form action="/add_category" method="post">
+                    <div>Add category </div>
+                    <input type="text" name="category" id="category">
+                   <div> <button>Add </button></div>
+                </form>
             </div>
-
-
            
-      
-             
 </body>
 
 </html>

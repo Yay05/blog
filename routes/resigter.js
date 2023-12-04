@@ -1,4 +1,5 @@
 var express = require('express');
+var bcrypt = require('bcrypt');
 const app = express.Router();
 
 
@@ -12,12 +13,12 @@ app.get('/register', function (req, res) {
  
  app.post('/register', function (req, res) {
     var details = req.body;
-    Database.findOne({ email: req.body.email }, (err, response) => {
+   
+    Database.findOne({ email: req.body.email }, async (err, response) => {
        console.log(response);
        if (response) {
-          res.render('sign_in', { message: 'User Already Exists! Login or choose another user id' });
+          res.render('register', { message: 'User Already Exists! Login or choose another user id' });
        }
- 
  
        else if (!details.name || !details.email || !details.password || !details.cpassword) {
           res.render('register', { message: "enter details" });
@@ -26,22 +27,24 @@ app.get('/register', function (req, res) {
           res.render('register', { message: "paswword doesnot match", type: "error" });
        }
        else {
+
+         const hash = await bcrypt.hash(details.password,10);
           var newPerson = new Database({
              name: details.name,
              email: details.email,
-             password: details.password,
+             password: hash,
              status: 1,
-             privilege: 'basic',
+             privilege: 'premium',
              id: '',
-             rating : 0
+             rating : 150,
+             rejectedBy : '',
           });
  
           newPerson.save(function (err, person) {
              if (err)
-                res.redirect('/dashboard');
+                res.redirect('/register');
              else
- 
-                req.session.user = newPerson;
+             req.session.user = newPerson;
              res.redirect('/dashboard');
           });
  

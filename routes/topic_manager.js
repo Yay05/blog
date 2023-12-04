@@ -12,7 +12,7 @@ app.use(function (req, res, next) { res.set('Cache-Control', 'no-cache, private,
 
 function checkSignIn(req, res, next) {
    if(!req.session.user){
-      res.redirect('/'); 
+      res.redirect('/?msg= error not logged in'); 
    }
 
    else if (req.session.user.privilege === 'topicManager') {
@@ -20,7 +20,7 @@ function checkSignIn(req, res, next) {
    } 
     else {
 
-      res.redirect('/?msg= error not logged in');
+      res.redirect('/?msg= unauthorized access');
       var err = new Error("Not logged in!");
       // console.log(req.session.user);
       next(err);  //Error, trying to access unauthorized page!
@@ -34,11 +34,10 @@ app.get('/topicManager', checkSignIn, function (req, res) {
    var id = req.session.user.id;
    Database.find(function (err, response) {
       Article.find(function (err, articles) {
-      // console.log(articles)
-      // console.log(response)
+     
       if (Message) {
          res.render('topic_manager', { data: response, id, Message,articles });
-         // console.log(Message);
+
       }
       else {
          res.render('topic_manager', { data: response,id, Message : '',articles});
@@ -47,28 +46,62 @@ app.get('/topicManager', checkSignIn, function (req, res) {
 });
 });
 
+app.get('/topicManager_manage_users', checkSignIn, function (req, res) {
+   var Message = req.query.msg;
+   var id = req.session.user.id;
+   Database.find(function (err, response) {
+      Article.find(function (err, articles) {
+     
+      if (Message) {
+         res.render('topicManager_users', { data: response, id, Message,articles });
+
+      }
+      else {
+         res.render('topicManager_users', { data: response,id, Message : '',articles});
+      }
+   });
+});
+});
+
+app.get('/requests', checkSignIn, function (req, res) {
+   var Message = req.query.msg;
+   var id = req.session.user.id;
+   Database.find(function (err, response) {
+      Article.find(function (err, articles) {
+     
+      if (Message) {
+         res.render('requests', { data: response, id, Message,articles });
+
+      }
+      else {
+         res.render('requests', { data: response,id, Message : '',articles});
+      }
+   });
+});
+});
+
 
 
 app.get('/rejectUser/:id',checkSignIn, function (req, res) {
-   Database.findByIdAndUpdate(req.params.id, { status: 0 }, function (err, response) {
+   Database.findByIdAndUpdate(req.params.id, { status: 0 ,rejectedBy : 'topicManager' }, function (err, response) {
       if (err) {
-            res.redirect('topicManager?msg= error rejecting');
+            res.redirect('topicManager_manage_users?msg= error rejecting');
       }
       else {
 
-         res.redirect('/topicManager')
+         res.redirect('/topicManager_manage_users')
       }
    });
 });
 
 app.get('/acceptUser/:id', checkSignIn,function (req, res) {
-   Database.findByIdAndUpdate(req.params.id, { status: 1 }, function (err, response) {
+   Database.findByIdAndUpdate(req.params.id, { status: 1 ,rejectedBy : ''}, function (err, response) {
       if (err) {
-            res.redirect('topicManager?msg= error accepting');
+            res.redirect('topicManager_manage_users?msg= error accepting');
       }
       else {
 
-         res.redirect('/topicManager')
+         res.redirect('/topicManager_manage_users')
       }
    });
 });
@@ -76,15 +109,15 @@ app.get('/acceptUser/:id', checkSignIn,function (req, res) {
 
 
 app.get('/accept_Article/:id', checkSignIn,function (req, res) {
-   Article.findOneAndUpdate({count : req.params.id}, { isAccepted: 1 }, function (err, response) {
+   Article.findOneAndUpdate({count : req.params.id}, { isAccepted: 1 ,acceptedTime: new Date(), }, function (err, response) {
       console.log(response)
       console.log(req.params.id)
       if (err) {
-            res.redirect('topicManager?msg= error accepting');
+            res.redirect('requests?msg= error accepting');
       }
       else {
 
-         res.redirect('/topicManager?msg=  accepted')
+         res.redirect('/requests?msg=  accepted')
       }
    });
  
@@ -97,11 +130,11 @@ app.get('/reject_Article/:id', checkSignIn,function (req, res) {
       console.log(response)
       console.log(req.params.id)
       if (err) {
-            res.redirect('topicManager?msg= error accepting');
+            res.redirect('requests?msg= error accepting');
       }
       else {
 
-         res.redirect('/topicManager?msg=  rejected')
+         res.redirect('/requests?msg=  rejected')
       }
    });
    

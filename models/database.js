@@ -8,7 +8,8 @@ var blog = mongoose.Schema({
     status : Number,
     privilege: String,
     id : String,
-    rating: Number
+    rating: Number,
+    rejectedBy : String,
     
  });
  var Database = mongoose.model("Blog", blog);

@@ -1,5 +1,4 @@
 var express = require('express');
-
 const app = express.Router();
 var Database = require('../models/database');
 var Article = require('../models/articles');
@@ -12,13 +11,28 @@ var Comment = require('../models/comment');
 app.get('/view_more/:id', function (req, res) {
    var id = req.params.id;
    var CurrentTime = new Date();
-   var Name =  req.session.user.name;  
+
+   if( req.session.user){
+      var Name =  req.session.user.name;  
+   }
+   else{
+      var Name =  '';
+   }
+  
+   if( req.session.count){
+      var count = req.session.count ;;  
+   }
+  
    var count = req.session.count ;
   
    Article.find(function (err, response) {
       Comment.find(function (err, data) {
+         if( req.session.user){
+            var Name =  req.session.user.name;  
+         }
+         console.log(data)
          Likes.find(function (err, likes) {
-            Likes.findOne({ id: req.params.id, name: req.session.user.name },{  count: 1} ,{ new: true },function (err, result) {
+            Likes.findOne({ id: req.params.id, name : Name},{  count: 1} ,{ new: true },function (err, result) {
                console.log(result)
                console.log(id)
                console.log(Name)
@@ -35,7 +49,7 @@ app.get('/view_more/:id', function (req, res) {
             }
                else
             {
-               res.render('view_more', { articles: response, id, comments: data, CurrentTime ,likes,Name,Count : '',User : req.session.user.privilege});
+               res.render('view_more', { articles: response, id, comments: '', CurrentTime ,likes : '',Name : '',Count : '',User : ''});
                console.log('lololol')
             }
         
@@ -55,15 +69,11 @@ app.post('/view_more/:id', function (req, res) {
    }
 
    else {
-
-    
-
          const newComment = new Comment({
             id: u_id,
             comment: data.Comments,
             name: req.session.user.name,
             date: new Date(),
-           
             
          });
 
@@ -186,7 +196,8 @@ app.get('/remove_like/:id', function (req, res) {
    });
 
 
-
+   app.use(express.static('images'));
+   app.use(express.static('css'));
 });
 
 module.exports = app;

@@ -34,6 +34,7 @@
                     <a class="nav-link" href="/manageUsers">Manage-Users</a>
                     <a class="nav-link" href="/addTopics">Add-category</a>
                     <a class="nav-link" href="/add_topicManager">Add-Topic-Manager </a>
+                   
                 </div>
                 <div class="navbar-nav ml-auto">
                     <a class="nav-link" href="/logout">Logout</a>
@@ -42,61 +43,58 @@
         </div>
     </nav>
 
-
+    <% if (message) { %>
+        <div id="div">
+            <h1>
+                <%= message %>
+            </h1>
+        </div>
+    <% } %>
+          
    
-                <%= message  %>
- 
 
-
-
-            <div class="article-container">
-                <div class="articles" id="articles">
+            <div class="manage-topic-managers" id="manage-topic-managers">
+                <table>
+                    <tr>
+                        <th>SI NO</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Action</th>
+                        <th></th>
+                    </tr>
                     <% var i=1 %>
-                        <% article.reverse().forEach(articles=> { %>
-                            <% data.reverse().forEach(person=> { %>
-                                <% if (person._id==articles.id) { %>
-                            <% if (person.status === 1 && articles.isAccepted === 1) { %>
-                            <div style="margin: 10px;"></div>
-                           
-                            <div class="image-container">
-                               
-                              
-            
-                            <div style="margin: 10px;">
-                                <img src="<%= articles.Image %>" height="250px" width="250px">
-                            </div>
-                            <%
-                            const requestedTime = new Date(articles.acceptedTime);
-                        %>
-        
-                        <h4><%= requestedTime.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></h4>
-                            <h1>
-                                <%= articles.topic %>
-                            </h1>
-                            <div class="article-article" style="margin: 10px;">
-                                <p style="display: inline;">
-                                    <%= articles.article.substr(0,500) + "..." %>
-                                  
-                                </p><a style="display: inline;" href="/view_more/<%= articles._id %>">view more</a>
-                            </div>
-                          
-                            
-                                
-                                    <div style="margin-bottom: 200px;">
-                                        By <%= person.name %>
-                                    </div>
-                                </div>
-                                    <% } %>
-                                    <% } %>
-                                 <% }); %>
-                        <% }); %>
-                </div>
+                        <% data.reverse().forEach(person=> { %>
+                            <% if(person.privilege !=='basic' && person.privilege !=='admin' ) { %>
+                                <tr>
+                                    <td>
+                                        <%= i++ %>
+                                    </td>
+                                    <td>
+                                        <%= person.name %>
+                                    </td>
+                                    <td>
+                                        <%= person.email %>
+                                    </td>
+                                   
+
+
+
+                                    <% if(person.status===2 ){ %>
+                                        <td><a href="/reject_topicManager/<%= person._id %>"><button>Reject</button></a>
+                                        </td>
+                                        <% } else { %>
+                                            <td><a
+                                                    href="accept_topicManager/<%= person._id %>"><button>accept</button></a>
+                                            </td>
+                                            <% } %>
+                                </tr>
+                                <% } %>
+                                    <% })%>
+                </table>
             </div>
 
 
-           
-      
-             
+
 </body>
 
 </html>

@@ -1,0 +1,49 @@
+* {
+    font-family: Alice;
+}
+
+.container {
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    
+
+}
+
+.cancel {
+    margin-left: 20px;
+}
+
+.comment {
+    margin-left: 20px;
+}
+
+
+.view-more-img {
+    height: 20px;
+    width: 20px;
+}
+
+.view-more-img1 {
+    height: 20px;
+    width: 20px;
+}
+
+.view-more-buttons {
+    display: flex;
+    justify-content: end;
+    margin-top: 20px;
+}
+
+.add-articles-textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #9dcde5;
+    overflow-y: hidden;
+}
+
+ h4 {
+    text-align: left;
+    margin-left: 20px;
+}

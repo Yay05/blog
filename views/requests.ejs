@@ -16,8 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alice&family=Cormorant:wght@300&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    
- <link rel="stylesheet" href="topicManager.css">
+    <link rel="stylesheet" href="topicManager.css">
 
 </head>
 
@@ -42,49 +41,53 @@
         </div>
     </nav>
         <%= Message %>
-        
-        <div class="article-container">
-            <div class="articles" id="articles">
+        <div class="accept_topic">
                 <% var i=1 %>
-                    <% articles.reverse().forEach(article=> { %>
-                        <% data.reverse().forEach(person=> { %>
-                            <% if (person._id==article.id) { %>
-                        <% if (person.status === 1 && article.isAccepted === 1) { %>
-                        <div style="margin: 10px;"></div>
+                <% data.reverse().forEach(person=> { %>
+                <% articles.reverse().forEach(article=> { %>
+                    
+                    <% if ( person._id == article.id && article.category === id) { %>
                        
-                        <div class="image-container">
-                           
-                            <%
-                            const requestedTime = new Date(article.acceptedTime);
-                        %>
-        
-                        <h4><%= requestedTime.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></h4>
-                        <div style="margin: 10px;">
-                            <img src="<%= article.Image %>" height="250px" width="250px">
-                        </div>
                         
+
+                    <% if (person.status === 1 && article.isAccepted === 0 && person.privilege !=='admin' && article.isRejected === 0) { %>
+                    <div style="margin: 10px;"></div>
+                    <div class="image-container">
+                        <img src="/<%= article.Image %>" height="250px" width="200px">
+                       
+                 <%
+                    const requestedTime = new Date(article.requestedTime);
+                %>
+
+                <h4><%= requestedTime.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></h4>
+
                         <h1>
-                            <%= articles.topic %>
+                            <%= article.topic %>
                         </h1>
-                        <div class="article-article" style="margin: 10px;">
-                            <p style="display: inline;">
-                                <%= article.article.substr(0,500) + "..." %>
-                              
-                            </p><a style="display: inline;" href="/view_more/<%= article._id %>">view more</a>
-                        </div>
+                    
+                    <div class="article-article" style="margin: 10px;">
+                        <p>
+                            <p style="display: inline;"><%= article.article.substr(0,300) + "..."%></p><a style="display: inline;" href="/view_more/<%= data._id %>">view more</a>
+
+                        </p>
                       
-                        
-                            
-                                <div style="margin-bottom: 200px;">
-                                    By <%= person.name %>
-                                </div>
+                    </div>
+                    
+
+                            <div style="margin-bottom: 20px;">
+                                By <%= person.name %>
                             </div>
-                                <% } %>
-                                <% } %>
-                             <% }); %>
-                    <% }); %>
-            </div>
-        </div>
+                             <a href="/accept_Article/<%= article.count %>"><button>accept</button></a>
+                            <a href="/reject_Article/<%= article.count %>"><button>reject</button></a>
+                        </div>
+                            <% } %>
+                            <% } %>
+                         <% }); %>
+                <% }); %>
+
+                </div>
+
+                
 </body>
 
 </html>

@@ -24,14 +24,14 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         <div class="container-fluid">
-            <a class="navbar-brand"href="/userProfile/<%= id %>">Profile</a>
+            <a class="navbar-brand" href="/userProfile/<%= id %>">Profile</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav mx-auto">
-                    <a class="nav-link" href="/dashboard">Blog</a>
+                    <a class="nav-link" href="/dashboard" >Blog</a>
                     <a class="nav-link" href="/manageArticle">Manage
                         Articles</a>
                     <a class="nav-link" href="/addArticle">Add Articles</a>
@@ -42,45 +42,61 @@
             </div>
         </div>
     </nav>
-
-    <!-- <%= id %> -->
     <%= message %>
-
-
-        <div class="article-container">
-        <div class="articles w-75" id="articles">
-            
-            <% var i=1 %>
-                <% newarticle.reverse().forEach(data=> { %>
-                    <%  if(data.isAccepted === 1 ) { %>
-                    <div style="margin: 10px;"></div>
-                   
-                    
-                        
-                    <div class="image-container">
+    <div class="manage-articles " id="manage-articles">
+        <div class="article-list">
+        <% var i=1 %>
+            <% newarticle.reverse().forEach(data=> { %>
+                <% if(data.id === id && data.isAccepted === 1){ %>
+                    <div class="article-card" >
                         <div style="margin: 10px;">
-                            <img src="<%= data.Image %>" height="250px" width="250px"></div>
+                        <div class="image-container">
+                           
+                        <img src="<%= data.Image %>" height="200px" width="200px">
+                        <div class="articles-align"> 
                             <%
-                    const requestedTime = new Date(data.acceptedTime);
-                %>
-
-                <h4><%= requestedTime.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></h4>
-                            <h1><%= data.topic %></h1>
-                    <div  class="article-article" style="margin: 10px;"> 
-                        <p style="display: inline;"><%= data.article.substr(0,100) + "..."%></p><a style="display: inline;" href="/view_more/<%= data._id %>">view more</a>
+                            const requestedTime = new Date(data.acceptedTime);
+                        %>
+        
+                        <h4><%= requestedTime.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></h4>
+                        <h1><%= data.topic %></div></h1>
+                       <br>
+                    <div  class="manage-article-article" >
+                        <p><%= data.article%></p>
+                     </div>
                     </div>
-                    <div style=" margin-bottom: 160px;">
-                       <p> By <%= data.name %></p>
                     </div>
+                    <div style="margin-top: 120px;
+                    margin-left: 20px;">
+                    <div class="manage-articles-img1"><a href="/edit_articles/<%= data._id %>"><img class="edit-img" src="edit.png" /></a></div>
+                    <div class="manage-articles-img"><a href="/delete_articles/<%= data._id %>"><img class="delete-img" src="trash.png" /></a>
                     </div>
+                </div>
+                </div>
+               
+               
                     <% } %>
-                    <% }); %>
-        </div>
+             <% }); %>
+
+             <% var i=1 %>
+             <% newarticle.reverse().forEach(data=> { %>
+                 <% if(data.id===id && data.isAccepted === 0 && data.isRejected === 1){ %>
+                    <div class="article-card" >
+                     <div>
+                         <h1><%= data.topic %></div></h1>
+                 
+                     <div  class="manage-article-article" >
+                         <p> <%= data.article %>'  </p>
+                        
+                         <h5> rejected by topicManager</h5>
+                      </div>
+                  <% } %>
+              <% }); %>
+            </div>
+            </div>
     </div>
 
-     
-   
-        
+
 </body>
 
 </html>

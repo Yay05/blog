@@ -31,7 +31,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav mx-auto">
-                    <a class="nav-link" href="/dashboard">Blog</a>
+                    <a class="nav-link" href="/dashboard" >Blog</a>
                     <a class="nav-link" href="/manageArticle">Manage
                         Articles</a>
                     <a class="nav-link" href="/addArticle">Add Articles</a>
@@ -42,45 +42,41 @@
             </div>
         </div>
     </nav>
-
-    <!-- <%= id %> -->
+    
     <%= message %>
-
-
-        <div class="article-container">
-        <div class="articles w-75" id="articles">
-            
-            <% var i=1 %>
-                <% newarticle.reverse().forEach(data=> { %>
-                    <%  if(data.isAccepted === 1 ) { %>
-                    <div style="margin: 10px;"></div>
-                   
-                    
-                        
-                    <div class="image-container">
-                        <div style="margin: 10px;">
-                            <img src="<%= data.Image %>" height="250px" width="250px"></div>
-                            <%
-                    const requestedTime = new Date(data.acceptedTime);
-                %>
-
-                <h4><%= requestedTime.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></h4>
-                            <h1><%= data.topic %></h1>
-                    <div  class="article-article" style="margin: 10px;"> 
-                        <p style="display: inline;"><%= data.article.substr(0,100) + "..."%></p><a style="display: inline;" href="/view_more/<%= data._id %>">view more</a>
-                    </div>
-                    <div style=" margin-bottom: 160px;">
-                       <p> By <%= data.name %></p>
-                    </div>
-                    </div>
-                    <% } %>
-                    <% }); %>
+    <div class="add-articles-container">
+            <div id="add-articles" class="add-articles">
+                <form action="/add_articles/<%= id %>" enctype="multipart/form-data"  method="post">
+                    <div class="add-articles-category">select category</div>
+                    <select name="category" id="category">
+                        <option value="">select</option>
+                        <% Data.forEach(data=> { %>
+                            <option value="<%= data._id %>">
+                                <%= data.category %>
+                            </option>
+                            <% }); %>   
+                    </select>
+    
+                    <div>Heading</div>
+                    <input type="text" name="topic"  class="add-articles-heading">
+                    <div>Image</div>
+                    <input type="file" name = 'file' id="course" >
+                    <div>content</div>
+                    <textarea class="add-articles-textarea" name="article" oninput="autoAdjustHeight(this)"></textarea>
+                    <button type="submit" class="add-articles-button">Add</button>
+                </form>
+            </div>
         </div>
-    </div>
+    
+        <script>
+           
+            function autoAdjustHeight(textarea) {
+ 
+                    textarea.style.height = 'auto';
+                    textarea.style.height = (textarea.scrollHeight) + 'px';
+            }
+        </script>
 
-     
-   
-        
 </body>
 
 </html>

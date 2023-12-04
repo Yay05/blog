@@ -6,7 +6,7 @@ app.get('/logout', function (req, res) {
     req.session.destroy(function () {
        console.log("user logged out.")
     });
-    res.render('sign_in', { message: 'logged out' })
+    res.redirect('/?msg= user logged out')
  });
  
 

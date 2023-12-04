@@ -1,4 +1,5 @@
 var express = require('express');
+var bcrypt = require('bcrypt')
 
 const app = express.Router();
 var Database = require('../models/database');
@@ -11,7 +12,7 @@ app.use(function (req, res, next) { res.set('Cache-Control', 'no-cache, private,
 
 function checkSignIn(req, res, next) {
    if(!req.session.user){
-      res.redirect('/'); 
+      res.redirect('/?msg= error not logged in'); 
    }
 
    else if (req.session.user.privilege === 'admin') {
@@ -19,7 +20,7 @@ function checkSignIn(req, res, next) {
    }
     else {
 
-      res.redirect('/?msg= error not logged in');
+      res.redirect('/?msg= unauthorized access');
       var err = new Error("Not logged in!");
       console.log(req.session.user);
       next(err);  //Error, trying to access unauthorized page!
@@ -29,45 +30,94 @@ function checkSignIn(req, res, next) {
 
 
 app.get('/admin', checkSignIn, function (req, res) {
-    var Message = req.query.msg;
+    var Message = req.query.msg ;
     Database.find(function (err, response) {
        console.log(response)
        Article.find(function (err, article) {
        if (Message) {
-          res.render('admin', { data: response, Message,article });
+          res.render('admin', { data: response, message : Message,article });
           console.log(Message);
        }
        else {
-          res.render('admin', { data: response, Message,article });
+          res.render('admin', { data: response, message : '' ,article });
        }
     });
    });
  });
+
+ app.get('/manageTopicManagers', checkSignIn, function (req, res) {
+   var Message = req.query.msg;
+   Database.find(function (err, response) {
+      console.log(response)
+      Article.find(function (err, article) {
+      if (Message) {
+         res.render('manage_topic_managers', { data: response,  message : Message,article });
+         console.log(Message);
+      }
+      else {
+         res.render('manage_topic_managers', { data: response,  message : '',article });
+      }
+   });
+  });
+});
+
+app.get('/manageUsers', checkSignIn, function (req, res) {
+   var Message = req.query.msg;
+   Database.find(function (err, response) {
+      console.log(response)
+      Article.find(function (err, article) {
+      if (Message) {
+         res.render('manage_users', { data: response,  message : Message,article });
+         console.log(Message);
+      }
+      else {
+         res.render('manage_users', { data: response,  message : '',article });
+      }
+   });
+  });
+});
+
+app.get('/addTopics', checkSignIn, function (req, res) {
+   var Message = req.query.msg;
+   Database.find(function (err, response) {
+      console.log(response)
+      Article.find(function (err, article) {
+      if (Message) {
+         res.render('add_topics', { data: response,  message : Message,article });
+         console.log(Message);
+      }
+      else {
+         res.render('add_topics', { data: response,  message : '',article });
+      }
+   });
+  });
+});
+
  
  app.get('/reject_user/:id',checkSignIn, function (req, res) {
-    Database.findByIdAndUpdate(req.params.id, { status: 0 }, function (err, response) {
+    Database.findByIdAndUpdate(req.params.id, { status: 0 , rejectedBy : 'admin' }, function (err, response) {
        if (err) {
           Database.find(function (err, data) {
-             res.render('admin', { data });
+             res.render('manageUsers', { data });
           });
        }
        else {
  
-          res.redirect('/admin')
+          res.redirect('/manageUsers')
        }
     });
  });
  
  app.get('/accept_user/:id',checkSignIn, function (req, res) {
-    Database.findByIdAndUpdate(req.params.id, { status: 1 }, function (err, response) {
+    Database.findByIdAndUpdate(req.params.id, { status: 1 ,rejectedBy : ''}, function (err, response) {
        if (err) {
           Database.find(function (err, data) {
-             res.render('admin', { data });
+             res.render('manageUsers', { data });
           });
        }
        else {
  
-          res.redirect('/admin')
+          res.redirect('/manageUsers')
        }
     });
  });
@@ -98,7 +148,7 @@ app.get('/admin', checkSignIn, function (req, res) {
           res.redirect('/admin?msg= already exist');
        }
        else if (!data.category) {
-          res.redirect('/admin?msg= fenter category');
+          res.redirect('/admin?msg= enter category');
           // res.render('blog',{message: 'article is empty',id: u_id,newarticle :''})
        }
  
@@ -136,12 +186,12 @@ app.get('/add_topicManager',checkSignIn, function (req, res) {
     });
  });
  
- app.post('/add_topicManager',checkSignIn, function (req, res) {
+ app.post('/add_topicManager',checkSignIn,  function (req, res) {
     var data = req.body;
     console.log(data);
     console.log(data.category);
     Database.findOne({ email: data.email }, (err, response1) => {
-       Database.findOne({ id: data.category }, (err, response2) => {
+       Database.findOne({ id: data.category }, async (err, response2) => {
           if (response1) {
              res.redirect('/add_topicManager?msg= email already exist');
           }
@@ -160,13 +210,16 @@ app.get('/add_topicManager',checkSignIn, function (req, res) {
           }
  
           else {
+            const hash =  await bcrypt.hash(data.password,10);
              var newPerson = new Database({
                 name: data.name,
                 email: data.email,
-                password: data.password,
+                password: hash,
                 status: 2,
                 privilege: 'topicManager',
                 id: data.category,
+                rating : 0,
+                rejectedBy : '',
              });
              newPerson.save(function (err, person) {
                 if (err)
@@ -182,25 +235,25 @@ app.get('/add_topicManager',checkSignIn, function (req, res) {
  })
  
  app.get('/reject_topicManager/:id',checkSignIn, function (req, res) {
-    Database.findByIdAndUpdate(req.params.id, { status: 0 }, function (err, response) {
+    Database.findByIdAndUpdate(req.params.id, { status: 0 ,rejectedBy : 'admin'}, function (err, response) {
        if (err) {
-             res.redirect('/admin?msg= error rejecting topic manager');
+             res.redirect('/manageTopicManagers?msg= error rejecting topic manager');
        }
        else {
  
-          res.redirect('/admin')
+          res.redirect('/manageTopicManagers')
        }
     });
  });
  
  app.get('/accept_topicManager/:id',checkSignIn, function (req, res) {
-    Database.findByIdAndUpdate(req.params.id, { status: 2 }, function (err, response) {
+    Database.findByIdAndUpdate(req.params.id, { status: 2 ,rejectedBy : ''}, function (err, response) {
        if (err) {
-          res.redirect('/admin?msg= error rejecting topic manager');
+          res.redirect('/manageTopicManagers?msg= error rejecting topic manager');
        }
        else {
  
-          res.redirect('/admin')
+          res.redirect('/manageTopicManagers')
        }
     });
  });

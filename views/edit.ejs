@@ -163,6 +163,7 @@
         <form action="/edit_articles/<%= id %>" method="post">
             <div class="edit-category">select category</div>
             <select name="category" id="category">
+                
                 <option value="">select</option>
                 <% Data.forEach(data=> { %>
                     <option value="<%= data._id %>">
@@ -174,6 +175,7 @@
 
             <div>Heading</div>
             <input type="text" name="topic" value="<%= topic %>" class="edit-heading">
+           
             <div>content</div>
             <textarea style="width: 100%;" name="article" class="add-articles-textarea"
                 oninput="autoAdjustHeight(this)"><%= user_article %></textarea>
