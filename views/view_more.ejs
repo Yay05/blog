@@ -69,6 +69,7 @@
 </head>
 
 <body>
+
   <nav class="navbar navbar-expand-lg navbar-light bg-light" style="box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
     <div class="container-fluid">
       
@@ -101,6 +102,7 @@
   </nav>
   <div class="container">
 
+   
     <% articles.forEach(article=> { %>
       <% if (id==article._id) { %>
         <h1>
@@ -118,7 +120,7 @@
         <p style=" text-align: justify;">
           <%= article.article %>
         </p>
-
+        <% if(User === 'premium'){  %>
 
           <form action="/view_more/<%= id %>" method="post">
             <div>comment</div>
@@ -126,20 +128,19 @@
               oninput="autoAdjustHeight(this)"></textarea>
             <div class="view-more-buttons">
 
-
-
+             
               <% 
               let userLiked=false;
                for (let index in likes) { 
                 const like=likes[index]; 
-                if(like.count===Count){ 
-                  if(like.name===Name && like.like===1 && like.id==id && Count===like.count) {
+               
+                  if(like.name===Name && like.like===1 && like.id==id ) {
                      userLiked=true;
                       break;
                      } else{
                        userLiked=false;
                        }
-                       }
+                       
                        }
                         %>
 
@@ -161,6 +162,7 @@
                       <button type="submit" class="comment">comment</button>
             </div>
           </form>
+          <%  }  %>
          
             <% } %>
               <% }); %>
@@ -169,71 +171,74 @@
                   <% articles.forEach(article=> { %>
                     
                     <% comments.reverse().forEach(com=> { %>
-                    <% if (com) { %>
+                    
                       <% if( id===com.id && id==article._id ){ %>
                         <p style="display: inline;margin-right: 20px;">@<%= com.name %>
                         </p>
-                        <% const elapsedMilliSeconds=(CurrentTime - com.date)
-                           const seconds=(CurrentTime - com.date) /1000;
-                           const elapsedTimeSeconds=Math.round(seconds);
-                           const Minutes=elapsedTimeSeconds / 60;
-                           const elapsedTimeMinutes=Math.round(Minutes);
-                           const Hours=elapsedTimeMinutes / 60;
-                           constelapsedTimeHours=Math.round(Hours);
-                           const days=elapsedTimeHours / 24;
-                           const elapsedTimedays=Math.round(days);
-                           const Month=elapsedTimedays / 31;
-                           constelapsedTimeMonth=Math.round(Month);
-                           const Years=elapsedTimeMonth / 12;
-                           const elapsedTimeYears=Math.round(Years);
-                        %>
+                    
+                        <%
+                        const elapsedMilliSeconds = (CurrentTime - com.date);
+                        const seconds = (CurrentTime - com.date) / 1000;
+                        const elapsedTimeSeconds = Math.round(seconds);
+                        const Minutes = elapsedTimeSeconds / 60;
+                        const elapsedTimeMinutes = Math.round(Minutes);
+                        const Hours = elapsedTimeMinutes / 60;
+                        const elapsedTimeHours = Math.round(Hours);
+                        const days = elapsedTimeHours / 24;
+                        const elapsedTimedays = Math.round(days);
+                        const Month = elapsedTimedays / 31;
+                        const elapsedTimeMonth = Math.round(Month);
+                        const Years = elapsedTimeMonth / 12;
+                        const elapsedTimeYears = Math.round(Years);
+                      %>
+                      
+                      <% if (elapsedMilliSeconds > 0 && elapsedMilliSeconds <= 1000) { %>
+                        <p style="display: inline;">just now</p>
+                      
+                      <% } else if (elapsedTimeSeconds > 0 && elapsedTimeSeconds <= 60) { %>
+                        <p style="display: inline;">
+                          <%= elapsedTimeSeconds %> seconds ago
+                        </p>
+                      
+                      <% } else if (elapsedTimeMinutes > 0 && elapsedTimeMinutes <= 60) { %>
+                        <p style="display: inline;">
+                          <%= elapsedTimeMinutes %> minutes ago
+                        </p>
+                      
+                      <% } else if (elapsedTimeHours > 0 && elapsedTimeHours <= 24) { %>
+                        <p style="display: inline;">
+                          <%= elapsedTimeHours %> hours ago
+                        </p>
+                      
+                      <% } else if (elapsedTimedays > 0 && elapsedTimedays <= 31) { %>
+                        <p style="display: inline;">
+                          <%= elapsedTimedays %> days ago
+                        </p>
+                      
+                      <% } else if (elapsedTimeMonth > 0 && elapsedTimeMonth <= 12) { %>
+                        <p style="display: inline;">
+                          <%= elapsedTimeMonth %> months ago
+                        </p>
+                      
+                      <% } else { %>
+                        <p style="display: inline;">
+                          <%= elapsedTimeYears %> years ago
+                        </p>
+                      <% } %>
+                      
+                      <p>
+                        <%= com.comment %>
+                      </p>
+                      
+                        
 
-                          <% if (elapsedMilliSeconds> 0 && elapsedMilliSeconds <= 1000) { %>
-                              <p style="display: inline;">just now</p>
-
-                              <% } else if (elapsedTimeSeconds> 0 && elapsedTimeSeconds <= 60) { %>
-                                  <p style="display: inline;">
-                                    <%= elapsedTimeSeconds %> seconds ago
-                                  </p>
-
-
-                                  <% } else if (elapsedTimeMinutes> 0 && elapsedTimeMinutes <= 60) { %>
-                                      <p style="display: inline;">
-                                        <%= elapsedTimeMinutes %> minutes ago
-                                      </p>
-
-                                      <% } else if (elapsedTimeHours> 0 && elapsedTimeHours <= 24) { %>
-                                          <p style="display: inline;">
-                                            <%= elapsedTimeHours %> hours ago
-                                          </p>
-
-                                          <% } else if (elapsedTimedays> 0 && elapsedTimedays <= 31) { %>
-                                              <p style="display: inline;">
-                                                <%= elapsedTimedays %> days ago
-                                              </p>
-
-                                              <% } else if (elapsedTimeMonth> 0 && elapsedTimeMonth <= 12) { %>
-                                                  <p style="display: inline;">
-                                                    <%= elapsedTimeMonth %> months ago
-                                                  </p>
-
-                                                  <% } else { %>
-                                                    <p style="display: inline;">
-                                                      <%= elapsedTimeYears %> years ago
-                                                    </p>
-                                                    <% } %>
-
-                                                      <p>
-                                                        <%= com.comment %>
-                                                      </p>
-
-                                                      <% } %>
-                                                      <% } %>
-                                                        <% }); %>
-                                                          <% }); %>
-                                                            <% } %>
+                                                     
+                 <% } %>
+              <% }); %>
+            <% }); %>
+           <% } %>
   </div>
-
+ 
   <script>
     function autoAdjustHeight(textarea) {
 

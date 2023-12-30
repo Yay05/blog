@@ -7,58 +7,36 @@ var Comment = require('../models/comment');
 
 
 
-
 app.get('/view_more/:id', function (req, res) {
    var id = req.params.id;
-   var CurrentTime = new Date();
+   console.log(id)
 
-   if( req.session.user){
-      var Name =  req.session.user.name;  
+   var CurrentTime = new Date();
+   var Name
+   if(req.session.user){
+      Name =  req.session.user.name
    }
    else{
-      var Name =  '';
+      Name = ''
    }
-  
-   if( req.session.count){
-      var count = req.session.count ;;  
-   }
-  
-   var count = req.session.count ;
+    
+ 
   
    Article.find(function (err, response) {
       Comment.find(function (err, data) {
-         if( req.session.user){
-            var Name =  req.session.user.name;  
-         }
-         console.log(data)
          Likes.find(function (err, likes) {
-            Likes.findOne({ id: req.params.id, name : Name},{  count: 1} ,{ new: true },function (err, result) {
-               console.log(result)
-               console.log(id)
-               console.log(Name)
-               console.log('hhsfhasdkahf')
-            if(count){
-               res.render('view_more', { articles: response, id, comments: data, CurrentTime ,likes,Name,Count : count ,User : req.session.user.privilege});
-               console.log('lol')
+            if(req.session.user){
+               res.render('view_more', { articles: response, id, comments: data, CurrentTime ,likes,Name,User : req.session.user.privilege});
+             
             }
-
-            else if(result){
-               res.render('view_more', { articles: response, id, comments: data, CurrentTime ,likes,Name,Count : result.count ,User : req.session.user.privilege});
-               console.log('lolol');
-               console.log(result)
-            }
-               else
+            else
             {
-               res.render('view_more', { articles: response, id, comments: '', CurrentTime ,likes : '',Name : '',Count : '',User : ''});
-               console.log('lololol')
+               res.render('view_more', { articles: response, id, comments: data, CurrentTime ,likes,Name : '',User : ''});
             }
-        
       });
    });
    });
-   });
 });
-
 
 
 app.post('/view_more/:id', function (req, res) {
@@ -77,7 +55,7 @@ app.post('/view_more/:id', function (req, res) {
             
          });
 
-         // Save the new article to the database
+         
          newComment.save(function (err, savedArticle) {
 
 

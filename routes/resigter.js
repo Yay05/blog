@@ -34,9 +34,9 @@ app.get('/register', function (req, res) {
              email: details.email,
              password: hash,
              status: 1,
-             privilege: 'premium',
+             privilege: 'basic',
              id: '',
-             rating : 150,
+             rating : 0,
              rejectedBy : '',
           });
  
